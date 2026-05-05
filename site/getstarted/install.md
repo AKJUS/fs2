@@ -28,7 +28,7 @@ libraryDependencies += "co.fs2" %%% "fs2-scodec" % "@VERSION@"
 
 // Node.js only, and requires module support to be enabled
 libraryDependencies += "co.fs2" %%% "fs2-io" % "@VERSION@"
-scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)) 
+scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
 ```
 
 The fs2-core as well as fs2-io and fs2-scodec libraries are also supported on Scala Native:
@@ -48,3 +48,36 @@ If upgrading from the 2.x series, see the [release notes for 3.0.0](https://gith
 If upgrading from the 1.x series, see the [release notes for 2.0.0](https://github.com/typelevel/fs2/releases/tag/v2.0.0) for help with upgrading.
 
 There are [detailed migration guides](https://github.com/typelevel/fs2/blob/main/docs/) for migrating from older versions.
+
+### Native
+
+For scala native, fs2 has a dependancy on [s2n](https://github.com/aws/s2n-tls). To be able to link a scala-native fs2 based application, s2n will need to be made available to the linker. If this is happening to you (commonly perhaps if fs2 is a transitive dependency), you are likely observing a linker error similar to the following:
+
+```
+[error] ld: library 's2n' not found
+```
+
+Making this library available to the linker is a two step process;
+
+1. Install s2n locally
+2. Tell the build tool where to find s2n
+
+By way of an example on mac OS;
+
+```sh
+brew install s2n
+```
+And then, we must tell our build tool, where to find this library;
+
+```scala
+nativeLinkingOptions ++= Seq(
+  "-L/opt/homebrew/Cellar/s2n/1.7.2"
+)
+```
+Note: this an _example_ specific to macOS intended to be illustrative. Update for _your_ system, path, and version as needed.
+
+
+
+
+
+

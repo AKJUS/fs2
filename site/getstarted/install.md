@@ -51,13 +51,13 @@ There are [detailed migration guides](https://github.com/typelevel/fs2/blob/main
 
 ### Native
 
-For scala native, fs2 has a dependancy on [s2n](https://github.com/aws/s2n-tls). To be able to link a scala-native fs2 based application, s2n will need to be made available to the linker. If this is happening to you (commonly perhaps if fs2 is a transitive dependency), you are likely observing a linker error similar to the following:
+For scala native, fs2 has a dependancy on [s2n](https://github.com/aws/s2n-tls). To be able to link a scala-native fs2 based application, s2n will need to be made available to the linker. If you are observing a linker error in the logs similar to the following on native (commonly, if fs2 is a transitive dependency):
 
 ```
 [error] ld: library 's2n' not found
 ```
 
-Making this library available to the linker is a two step process;
+Then the following steps may help. Making s2n available to the linker is a two step process;
 
 1. Install s2n locally
 2. Tell the build tool where to find s2n

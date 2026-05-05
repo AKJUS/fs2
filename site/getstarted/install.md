@@ -51,31 +51,17 @@ There are [detailed migration guides](https://github.com/typelevel/fs2/blob/main
 
 ### Native
 
-For scala native, fs2 has a dependancy on [s2n](https://github.com/aws/s2n-tls). To be able to link a scala-native fs2 based application, s2n will need to be made available to the linker. If you are observing a linker error in the logs similar to the following on native (commonly, if fs2 is a transitive dependency):
+For scala native, fs2 has a dependancy on both [s2n](https://github.com/aws/s2n-tls) and [openssl](https://github.com/openssl/openssl). To be able to link a scala-native fs2 based application, s2n and openssl will need to be made available to the linker. If you are observing a linker error in the logs similar to the following on native (commonly, if fs2 is a transitive dependency):
 
 ```
 [error] ld: library 's2n' not found
 ```
 
-Then the following steps may help. Making s2n available to the linker is a two step process;
-
-1. Install s2n locally
-2. Tell the build tool where to find s2n
-
-By way of an example on mac OS;
+Then it is recommended to install s2n and openssl. On macOS for example, this can be done with homebrew:
 
 ```sh
-brew install s2n
+brew install openssl s2n
 ```
-And then, we must tell our build tool, where to find this library;
-
-```scala
-nativeLinkingOptions ++= Seq(
-  "-L/opt/homebrew/Cellar/s2n/1.7.2"
-)
-```
-Note: this an _example_ specific to macOS intended to be illustrative. Update for _your_ system, path, and version as needed.
-
 
 
 

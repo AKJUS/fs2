@@ -62,8 +62,3 @@ Then it is recommended to install s2n and openssl. On macOS for example, this ca
 ```sh
 brew install openssl s2n
 ```
-
-
-
-
-
